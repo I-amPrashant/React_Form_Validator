@@ -1,22 +1,20 @@
-import React, { useState, useRef } from "react";
+import React, { useState} from "react";
+import FormItem from "./FormItem";
 import useValidator from "./UseValidatorHook";
 export default function App() {
   const [dropdown, setDropdown] = useState(false);
   const [cityName, setCityName] = useState("Chitwan");
-  const firstInputRef = useRef(null);
   const [formData, setFormData] = useState({
     FirstName: {value:'', error:''},
     LastName: {value:'', error:''},
     DOB: {value:'', error:''},
     City: cityName,
-    Gender: {value:'', error:''},
+    Gender: {value:'Male', error:''},
     Citizenship:{value:'', error:''},
     Email: {value:'', error:''},
     Password: {value:'', error:''},
     CPassword: {value:'', error:''},
   });
-  const {error, validate} = useValidator(formData);
-
   const cities = [
     "Chitwan",
     "Kathmandu",
@@ -25,9 +23,17 @@ export default function App() {
     "Humla",
     "Gorkha",
   ];
+  const {validator, errorName}=useValidator(formData,setFormData)
  
   const handleDropdown = () => {
     setDropdown(true);
+  };
+ 
+  const handleRadio = (e) =>{
+    setFormData({
+      ...formData,
+      [e.target.name]: {value: e.target.value, error:''},
+    });
   };
   const handleChange = (e) => {
     setFormData({
@@ -35,62 +41,49 @@ export default function App() {
       [e.target.name]: {value: e.target.value, error:''},
     });
   };
-  const handleRadio = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: {value: e.target.value, error:''},
-    });
-  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    validate();
+    validator();
   };
-  error && firstInputRef.current.focus();
-
   return (
     <>
       <div className="container">
         <h1>Form Validation</h1>
-       {error && <p className="error">{error}*</p>}
         <form onSubmit={(e) => handleSubmit(e)}>
-          <div className="form-item">
-            <label htmlFor="FirstName">First Name: </label>
-            <input
-              type="text"
-              ref={firstInputRef}
-              value={formData.FirstName.value}
-              name="FirstName"
-              id="FirstName"
-              placeholder="enter your first name..."
-              onChange={(e) => handleChange(e)}
-              minLength={3}
-              maxLength={10}
-            />
-          </div>
-          <div className="form-item">
-            <label htmlFor="LastName">Last Name: </label>
-            <input
-              type="text"
-              value={formData.LastName.value}
-              name="LastName"
-              id="LastName"
-              placeholder="enter your last name..."
-              minLength={3}
-              maxLength={10}
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
-          <div className="form-item">
-            <label htmlFor="DOB">Date of Birth: </label>
-            <input
-              type="date"
-              value={formData.DOB.value}
-              name="DOB"
-              id="DOB"
-              placeholder="enter your dob..."
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
+          <FormItem 
+           type="text"
+           value={formData.FirstName.value}
+           name="FirstName"
+           labelText="First Name: "
+           placeholder="enter your first name..."
+           formData={formData}
+           setFormData={setFormData}
+           errorName={errorName}
+           minLength={3}
+           maxLength={10}
+          />
+          <FormItem
+            type="text"
+            value={formData.LastName.value}
+            name="LastName"
+            labelText="Last Name: "
+            placeholder="enter your last name..."
+            formData={formData}
+            setFormData={setFormData}
+           errorName={errorName}
+            minLength={3}
+            maxLength={10}
+          />
+          <FormItem
+           type="date"
+           value={formData.DOB.value}
+           name="DOB"
+           labelText="Date of Birth: "
+           placeholder="enter your dob..."
+           formData={formData}
+           setFormData={setFormData}
+           errorName={errorName}
+          />
           <div className="form-item">
             <label>City: </label>
             <div className="custom-select" onClick={handleDropdown}>
@@ -125,6 +118,7 @@ export default function App() {
               name="Gender"
               id="Male"
               onChange={(e) => handleRadio(e)}
+              defaultChecked
             />
             <label htmlFor="Male" className="custom-radio-label">
               Male
@@ -139,19 +133,18 @@ export default function App() {
               Female
             </label>
           </div>
-          <div className="form-item">
-            <label htmlFor="Citizenship">Citizenship No: </label>
-            <input
-              type="number"
-              value={formData.Citizenship.value}
-              name="Citizenship"
-              id="Citizenship"
-              placeholder="enter your citizenship no..."
-              minLength={14}
-              maxLength={14}
-              onChange={(e) => handleChange(e)}
-            />
-          </div>
+          <FormItem
+           type="number"
+           value={formData.Citizenship.value}
+           name="Citizenship"
+           labelText="Citizenship No: "
+           placeholder="enter your citizenship no..."
+           formData={formData}
+           setFormData={setFormData}
+           errorName={errorName}
+           max={14}
+          />
+       
           <div className="form-item">
             <label htmlFor="Email">Email</label>
             <input
@@ -160,6 +153,8 @@ export default function App() {
               id="Email"
               name="Email"
               placeholder="enter your email.."
+              minLength={15}
+              maxLength={20}
               onChange={(e) => handleChange(e)}
             />
           </div>
@@ -171,6 +166,8 @@ export default function App() {
               id="Password"
               name="Password"
               placeholder="enter your password.."
+              minLength={10}
+              maxLength={15}
               onChange={(e) => handleChange(e)}
             />
           </div>
@@ -182,6 +179,8 @@ export default function App() {
               id="CPassword"
               name="CPassword"
               placeholder="confirm your password.."
+              minLength={10}
+              maxLength={15}
               onChange={(e) => handleChange(e)}
             />
           </div>
