@@ -1,4 +1,4 @@
-Form Validator
+## Form Validator
 
 This is a simple form validator application built with React. It allows you to create forms with various input types and validate their values.
 
