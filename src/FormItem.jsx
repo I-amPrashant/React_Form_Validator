@@ -9,12 +9,26 @@ export default function FormItem({type, value, name, labelText, placeholder, min
         });
       };
       errorName && errorName===name && inputRef.current.focus();
+
+        const normalTheme={
+          outline: 'none',
+          border: 'none',
+          padding:' 5px 20px',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          transition:'all .2s ease-in',
+        }
+        const errorTheme={
+          border: '2px solid red',
+        }
+        const appliedTheme=errorName===name?errorTheme:normalTheme
   return (
     <div className="form-item">
     <label htmlFor={name}>{labelText} </label>
     <input
       type={type}
       ref={inputRef}
+      style={appliedTheme}
       value={value}
       name={name}
       id={name}

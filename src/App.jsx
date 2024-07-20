@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
 import FormItem from "./FormItem";
 import useValidator from "./UseValidatorHook";
 export default function App() {
@@ -19,11 +19,11 @@ export default function App() {
     "Chitwan",
     "Kathmandu",
     "Birjung",
-    "Birtomode",
+    "Birtamode",
     "Humla",
     "Gorkha",
   ];
-  const {validator, errorName}=useValidator(formData,setFormData)
+  const {validator, errorName, errorValue}=useValidator(formData,setFormData)
  
   const handleDropdown = () => {
     setDropdown(true);
@@ -35,24 +35,21 @@ export default function App() {
       [e.target.name]: {value: e.target.value, error:''},
     });
   };
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: {value: e.target.value, error:''},
-    });
-  };
   const handleSubmit = (e) => {
     e.preventDefault();
     validator();
   };
+
+ 
   return (
     <>
       <div className="container">
         <h1>Form Validation</h1>
+        {errorValue && <p className="error">{errorValue}</p>}
         <form onSubmit={(e) => handleSubmit(e)}>
           <FormItem 
            type="text"
-           value={formData.FirstName.value}
+           value={formData['FirstName'].value}
            name="FirstName"
            labelText="First Name: "
            placeholder="enter your first name..."
@@ -113,6 +110,7 @@ export default function App() {
           </div>
           <div className="form-item">
             <label>Gender: </label>
+            <div style={{ display: "flex", gap: "25px" }}>
             <input
               type="radio"
               name="Gender"
@@ -132,6 +130,7 @@ export default function App() {
             <label htmlFor="Female" className="custom-radio-label">
               Female
             </label>
+            </div>
           </div>
           <FormItem
            type="number"

@@ -2,20 +2,30 @@ import React, {useState} from "react";
 
 const useValidator = (formData, setFormData) => {
     const  [errorName, setErrorName] = useState('');
+    const [errorValue, setErrorValue] = useState('');
    const validator=() => {
     let newFormData = { ...formData };
-    if (!formData['FirstName'].value) {
-      newFormData['FirstName'] = { value: formData['FirstName'].value, error: 'First Name is required' };
+    let validUsername=/^[A-Z][a-z]{3,}$/;
+
+    //first name
+  if(!validUsername.test(formData['FirstName'].value)){
+      newFormData['FirstName'] = { value: formData['FirstName'].value, error: 'first name should have at least 4 character and start with Uppercase' };
+      setErrorValue('first name should have at least 4 character and start with Uppercase')
       setErrorName(prevName=>prevName?prevName:'FirstName')
-    } else {
+    } 
+    else {
       newFormData['FirstName'] = { value: formData['FirstName'].value, error: '' };
+      setErrorValue('')
       setErrorName('')
     }
 
-    if (!formData['LastName'].value) {
-      newFormData['LastName'] = { value: formData['LastName'].value, error: 'Last Name is required' };
+    //last name
+   if(!validUsername.test(formData['LastName'].value)){
+      newFormData['LastName'] = { value: formData['LastName'].value, error: 'last name should have at least 4 character and start with Uppercase'};
+      setErrorValue(prevError=>prevError?prevError:'last name should have at least 4 character and start with Uppercase')
       setErrorName(prevName=>prevName?prevName:'LastName')
-    } else {
+    }
+    else {
       newFormData['LastName'] = { value: formData['LastName'].value, error: '' };
     }
 
@@ -35,6 +45,6 @@ const useValidator = (formData, setFormData) => {
 
     setFormData(newFormData);
    }
-    return {validator, errorName};
+    return {validator, errorName, errorValue};
 }
 export default useValidator;
