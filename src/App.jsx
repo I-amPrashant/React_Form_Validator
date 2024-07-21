@@ -5,15 +5,15 @@ export default function App() {
   const [dropdown, setDropdown] = useState(false);
   const [cityName, setCityName] = useState("Chitwan");
   const [formData, setFormData] = useState({
-    FirstName: { value: "", error: "" },
-    LastName: { value: "", error: "" },
-    DOB: { value: "", error: "" },
+    FirstName: { value: ""},
+    LastName: { value: ""},
+    DOB: { value: ""},
     City: cityName,
-    Gender: { value: "Male", error: "" },
-    Citizenship: { value: "", error: "" },
-    Email: { value: "", error: "" },
-    Password: { value: "", error: "" },
-    CPassword: { value: "", error: "" },
+    Gender: { value: "Male"},
+    Citizenship: { value: ""},
+    Email: { value: ""},
+    Password: { value: ""},
+    CPassword: { value: ""},
   });
   const cities = [
     "Chitwan",
@@ -23,7 +23,7 @@ export default function App() {
     "Humla",
     "Gorkha",
   ];
-  const { validator, errorName, errorValue, setErrorName } = useValidator(
+  const { validator, errorName, errorValue, formSubmitted } = useValidator(
     formData,
     setFormData
   );
@@ -40,10 +40,10 @@ export default function App() {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formSubmitted= validator();
+    validator();
     setTimeout(() => {
       if(formSubmitted){
-        alert(JSON.stringify(formData));
+        console.log(formData);
       }
     }, 500);
   };
@@ -63,7 +63,6 @@ export default function App() {
             formData={formData}
             setFormData={setFormData}
             errorName={errorName}
-            setErrorName={setErrorName}
             minLength={3}
             maxLength={10}
             handleSubmit={handleSubmit}
@@ -77,7 +76,6 @@ export default function App() {
             formData={formData}
             setFormData={setFormData}
             errorName={errorName}
-            setErrorName={setErrorName}
             minLength={3}
             maxLength={10}
             handleSubmit={handleSubmit}
@@ -91,7 +89,6 @@ export default function App() {
             formData={formData}
             setFormData={setFormData}
             errorName={errorName}
-            setErrorName={setErrorName}
             handleSubmit={handleSubmit}
           />
           <div className="form-item">
@@ -154,7 +151,6 @@ export default function App() {
             formData={formData}
             setFormData={setFormData}
             errorName={errorName}
-            setErrorName={setErrorName}
             min={14}
             handleSubmit={handleSubmit}
             max={14}
@@ -168,7 +164,6 @@ export default function App() {
             formData={formData}
             setFormData={setFormData}
             errorName={errorName}
-            setErrorName={setErrorName}
             maxLength={25}
             handleSubmit={handleSubmit}
           />
@@ -182,7 +177,6 @@ export default function App() {
             formData={formData}
             setFormData={setFormData}
             errorName={errorName}
-            setErrorName={setErrorName}
             maxLength={20}
             handleSubmit={handleSubmit}
           />
@@ -196,7 +190,6 @@ export default function App() {
             formData={formData}
             setFormData={setFormData}
             errorName={errorName}
-            setErrorName={setErrorName}
             maxLength={20}
             handleSubmit={handleSubmit}
           />

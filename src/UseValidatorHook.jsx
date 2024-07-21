@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const useValidator = (formData, setFormData) => {
   const [errorName, setErrorName] = useState("");
@@ -14,8 +14,6 @@ const useValidator = (formData, setFormData) => {
     if (!validUsername.test(formData["FirstName"].value)) {
       newFormData["FirstName"] = {
         value: formData["FirstName"].value,
-        error:
-          "first name should have at least 4 character and start with Uppercase",
       };
       setErrorValue(
         "first name should have at least 4 character and start with Uppercase"
@@ -24,7 +22,6 @@ const useValidator = (formData, setFormData) => {
     } else {
       newFormData["FirstName"] = {
         value: formData["FirstName"].value,
-        error: "",
       };
       setErrorValue("");
       setErrorName("");
@@ -34,8 +31,6 @@ const useValidator = (formData, setFormData) => {
     if (!validUsername.test(formData["LastName"].value)) {
       newFormData["LastName"] = {
         value: formData["LastName"].value,
-        error:
-          "last name should have at least 4 character and start with Uppercase",
       };
       setErrorValue((prevError) =>
         prevError
@@ -46,7 +41,6 @@ const useValidator = (formData, setFormData) => {
     } else {
       newFormData["LastName"] = {
         value: formData["LastName"].value,
-        error: "",
       };
     }
 
@@ -54,21 +48,19 @@ const useValidator = (formData, setFormData) => {
     if (!formData["DOB"].value) {
       newFormData["DOB"] = {
         value: formData["DOB"].value,
-        error: "Date of Birth is required",
       };
       setErrorValue((prevError) =>
         prevError ? prevError : "Date of Birth is required"
       );
       setErrorName((prevName) => (prevName ? prevName : "DOB"));
     } else {
-      newFormData["DOB"] = { value: formData["DOB"].value, error: "" };
+      newFormData["DOB"] = { value: formData["DOB"].value,};
     }
 
     //citizenship number
     if (formData["Citizenship"].value.length != 14) {
       newFormData["Citizenship"] = {
         value: formData["Citizenship"].value,
-        error: "citizenship number should be 14 characters long",
       };
       setErrorValue((prevError) =>
         prevError
@@ -79,7 +71,6 @@ const useValidator = (formData, setFormData) => {
     } else {
       newFormData["Citizenship"] = {
         value: formData["Citizenship"].value,
-        error: "",
       };
     }
 
@@ -87,22 +78,19 @@ const useValidator = (formData, setFormData) => {
     if (!validEmail.test(formData["Email"].value)) {
       newFormData["Email"] = {
         value: formData["Email"].value,
-        error: "invalid email address",
       };
       setErrorValue((prevError) =>
         prevError ? prevError : "invalid email address"
       );
       setErrorName((prevName) => (prevName ? prevName : "Email"));
     } else {
-      newFormData["Email"] = { value: formData["Email"].value, error: "" };
+      newFormData["Email"] = { value: formData["Email"].value,  };
     }
 
     //password
     if (!validPassword.test(formData["Password"].value)) {
       newFormData["Password"] = {
         value: formData["Password"].value,
-        error:
-          "password should have at least 10 character and one special character",
       };
       setErrorValue((prevError) =>
         prevError
@@ -113,7 +101,6 @@ const useValidator = (formData, setFormData) => {
     } else {
       newFormData["Password"] = {
         value: formData["Password"].value,
-        error: "",
       };
     }
 
@@ -121,8 +108,6 @@ const useValidator = (formData, setFormData) => {
     if (!validPassword.test(formData["CPassword"].value)) {
       newFormData["CPassword"] = {
         value: formData["CPassword"].value,
-        error:
-          "password should have at least 10 character and one special character",
       };
       setErrorValue((prevError) =>
         prevError
@@ -133,15 +118,14 @@ const useValidator = (formData, setFormData) => {
     } else {
       newFormData["CPassword"] = {
         value: formData["CPassword"].value,
-        error: "",
       };
     }
 
     setFormData(newFormData);
-    
-    !errorValue?setFormSubmitted(true):setFormSubmitted(false);
-    return formSubmitted;
   };
-  return { validator, errorName, errorValue, setErrorName };
+  useEffect(() => {
+    !errorValue?setFormSubmitted(true):setFormSubmitted(false);
+  }, [errorValue])
+  return { validator, errorName, errorValue, formSubmitted };
 };
 export default useValidator;
