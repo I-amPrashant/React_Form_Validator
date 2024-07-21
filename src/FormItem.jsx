@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
-export default function FormItem({type, value, name, labelText, placeholder, minLength, maxLength, formData, setFormData, errorName}) {
+export default function FormItem({type, value, name, labelText, placeholder, minLength, maxLength, formData, setFormData, errorName, handleSubmit}) {
     const inputRef=useRef(null)
     const handleChange = (e) => {
         setFormData({
@@ -8,6 +8,7 @@ export default function FormItem({type, value, name, labelText, placeholder, min
           [e.target.name]: {value: e.target.value, error:''},
         });
       };
+   
       errorName && errorName===name && inputRef.current.focus();
 
         const normalTheme={
@@ -34,6 +35,7 @@ export default function FormItem({type, value, name, labelText, placeholder, min
       id={name}
       placeholder={placeholder}
       onChange={(e)=>handleChange(e)}
+      onClick={(e)=>handleSubmit(e)}
       minLength={minLength}
       maxLength={maxLength}
     />
